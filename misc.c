@@ -20,13 +20,13 @@ rb_ldap_apiinfo_new (LDAPAPIInfo * info)
   api_version = INT2NUM (info->ldapai_api_version);
   protocol_version = INT2NUM (info->ldapai_protocol_version);
   vendor_version = INT2NUM (info->ldapai_vendor_version);
-  vendor_name = rb_tainted_str_new2 (info->ldapai_vendor_name);
+  vendor_name = rb_str_new2 (info->ldapai_vendor_name);
   extensions = rb_ary_new ();
 
   for (i = 0; info->ldapai_extensions[i]; i++)
     {
       rb_ary_push (extensions,
-		   rb_tainted_str_new2 (info->ldapai_extensions[i]));
+		   rb_str_new2 (info->ldapai_extensions[i]));
     }
 
   return rb_struct_new (rb_sLDAP_APIInfo,
@@ -183,7 +183,7 @@ rb_ldap_control_get_value (VALUE self)
   else
     {
       val =
-	rb_tainted_str_new (ctl->ldctl_value.bv_val, ctl->ldctl_value.bv_len);
+	rb_str_new (ctl->ldctl_value.bv_val, ctl->ldctl_value.bv_len);
     }
 
   return val;
@@ -254,7 +254,7 @@ rb_ldap_control_get_oid (VALUE self)
     }
   else
     {
-      val = rb_tainted_str_new2 (ctl->ldctl_oid);
+      val = rb_str_new2 (ctl->ldctl_oid);
     }
 
   return val;
@@ -396,7 +396,7 @@ rb_ldap_control_inspect (VALUE self)
 {
   VALUE str;
 
-  str = rb_tainted_str_new2 ("#<");
+  str = rb_str_new2 ("#<");
   rb_str_cat2 (str, rb_class2name (CLASS_OF (self)));
   rb_str_cat2 (str, " oid=");
   rb_str_concat (str, rb_inspect (rb_ldap_control_get_oid (self)));

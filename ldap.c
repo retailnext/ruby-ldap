@@ -44,7 +44,7 @@ rb_ldap_err2string (VALUE self, VALUE err)
   VALUE msg;
 
   cmsg = ldap_err2string (NUM2INT (err));
-  msg = rb_tainted_str_new2 (cmsg);
+  msg = rb_str_new2 (cmsg);
 
   return msg;
 }
@@ -80,7 +80,7 @@ rb_ldap_dn2ufn (VALUE self, VALUE dn)
   c_dn = StringValueCStr (dn);
   if ((c_ufn = ldap_dn2ufn (c_dn)))
     {
-      return rb_tainted_str_new2 (c_ufn);
+      return rb_str_new2 (c_ufn);
     }
   else
     {
@@ -106,7 +106,7 @@ rb_ldap_explode_dn (VALUE self, VALUE dn, VALUE notypes)
         ary = rb_ary_new ();
         for (p = c_arr; *p != NULL; p++)
         {
-            rb_ary_push (ary, rb_tainted_str_new2 (*p));
+            rb_ary_push (ary, rb_str_new2 (*p));
         }
         ldap_value_free (c_arr);
 
@@ -135,7 +135,7 @@ rb_ldap_explode_rdn (VALUE self, VALUE rdn, VALUE notypes)
     {
         ary = rb_ary_new ();
         for (p = c_arr; *p != NULL; p++) {
-            rb_ary_push (ary, rb_tainted_str_new2 (*p));
+            rb_ary_push (ary, rb_str_new2 (*p));
         }
         ldap_value_free (c_arr);
 
@@ -260,7 +260,7 @@ Init_ldap ()
 #endif
 
   rb_define_const (rb_mLDAP, "VERSION",
-		   rb_tainted_str_new2 (RB_LDAP_VERSION));
+		   rb_str_new2 (RB_LDAP_VERSION));
   rb_define_const (rb_mLDAP, "MAJOR_VERSION",
 		   INT2NUM (RB_LDAP_MAJOR_VERSION));
   rb_define_const (rb_mLDAP, "MINOR_VERSION",
@@ -283,7 +283,7 @@ Init_ldap ()
 #endif
 #ifdef LDAP_VENDOR_NAME
   rb_define_const (rb_mLDAP, "LDAP_VENDOR_NAME",
-		   rb_tainted_str_new2 (LDAP_VENDOR_NAME));
+		   rb_str_new2 (LDAP_VENDOR_NAME));
 #else
   rb_define_const (rb_mLDAP, "LDAP_VENDOR_NAME", Qnil);
 #endif

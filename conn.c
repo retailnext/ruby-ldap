@@ -688,7 +688,7 @@ rb_ldap_conn_get_option (VALUE self, VALUE opt)
 #endif
 #endif
 	  val = (data
-		 && *data) ? rb_tainted_str_new2 ((char *) (*data)) : Qnil;
+		 && *data) ? rb_str_new2 ((char *) (*data)) : Qnil;
 	  break;
 #ifdef LDAP_OPT_API_INFO
 	case LDAP_OPT_API_INFO:
@@ -781,7 +781,7 @@ rb_ldap_conn_err2string (VALUE self, VALUE err)
 
   GET_LDAP_DATA (self, ldapdata);
   str = ldap_err2string (c_err);
-  return (str ? rb_tainted_str_new2 (str) : Qnil);
+  return (str ? rb_str_new2 (str) : Qnil);
 };
 
 VALUE
@@ -826,14 +826,14 @@ rb_ldap_internal_strcmp (const char *left, const char *right)
 
   if (rb_ldap_sort_obj == Qtrue)
     {
-      res = rb_funcall (rb_tainted_str_new2 (left), rb_intern ("<=>"), 1,
-			rb_tainted_str_new2 (right));
+      res = rb_funcall (rb_str_new2 (left), rb_intern ("<=>"), 1,
+			rb_str_new2 (right));
     }
   else if (rb_ldap_sort_obj != Qnil)
     {
       res = rb_funcall (rb_ldap_sort_obj, rb_intern ("call"), 2,
-			rb_tainted_str_new2 (left),
-			rb_tainted_str_new2 (right));
+			rb_str_new2 (left),
+			rb_str_new2 (right));
     }
   else
     {

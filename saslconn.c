@@ -204,7 +204,7 @@ rb_ldap_conn_sasl_bind (int argc, VALUE argv[], VALUE self)
       /* How can I implement this with portability? */
       /* 
          VALUE scred;
-	 scred = rb_tainted_str_new(servercred->bv_val,
+	 scred = rb_str_new(servercred->bv_val,
          servercred->bv_len);
       */
     }

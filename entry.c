@@ -40,7 +40,7 @@ rb_ldap_entry_load_val(LDAP *ldap, LDAPMessage *msg, char *c_attr)
   nvals = ldap_count_values_len(bv);
   vals = rb_ary_new2(nvals);
   for (i = 0; i < nvals; i++) {
-    rb_ary_push(vals, rb_tainted_str_new(bv[i]->bv_val, bv[i]->bv_len));
+    rb_ary_push(vals, rb_str_new(bv[i]->bv_val, bv[i]->bv_len));
   }
   ldap_value_free_len(bv);
 
@@ -60,7 +60,7 @@ rb_ldap_entry_load_attr(LDAP *ldap, LDAPMessage *msg)
   for (c_attr = ldap_first_attribute(ldap, msg, &ber);
     c_attr != NULL;
     c_attr = ldap_next_attribute(ldap, msg, ber)) {
-    VALUE attr = rb_tainted_str_new2(c_attr);
+    VALUE attr = rb_str_new2(c_attr);
     VALUE vals = rb_ldap_entry_load_val(ldap, msg, c_attr);
 
     rb_hash_aset(hash, attr, vals);
@@ -106,7 +106,7 @@ rb_ldap_entry_new (LDAP * ldap, LDAPMessage * msg)
   /* get dn */
   c_dn = ldap_get_dn(ldap, msg);
   if (c_dn) {
-    edata->dn = rb_tainted_str_new2(c_dn);
+    edata->dn = rb_str_new2(c_dn);
     ldap_memfree(c_dn);
   }
   else {
@@ -139,7 +139,7 @@ rb_ldap_entry_get_dn (VALUE self)
   cdn = ldap_get_dn (edata->ldap, edata->msg);
   if (cdn)
     {
-      dn = rb_tainted_str_new2 (cdn);
+      dn = rb_str_new2 (cdn);
       ldap_memfree (cdn);
     }
   else
@@ -186,7 +186,7 @@ rb_ldap_entry_get_values (VALUE self, VALUE attr)
       for (i = 0; i < count; i++)
 	{
 	  VALUE str;
-	  str = rb_tainted_str_new (c_vals[i]->bv_val, c_vals[i]->bv_len);
+	  str = rb_str_new (c_vals[i]->bv_val, c_vals[i]->bv_len);
 	  rb_ary_push (vals, str);
 	}
       ldap_value_free_len (c_vals);
@@ -229,7 +229,7 @@ rb_ldap_entry_get_attributes (VALUE self)
        attr != NULL;
        attr = ldap_next_attribute (edata->ldap, edata->msg, ber))
     {
-      rb_ary_push (vals, rb_tainted_str_new2 (attr));
+      rb_ary_push (vals, rb_str_new2 (attr));
       ldap_memfree(attr);
     }
 
@@ -271,7 +271,7 @@ rb_ldap_entry_to_hash (VALUE self)
 
 #if RUBY_VERSION_CODE < 190
   Check_Type (attrs, T_ARRAY);
-  rb_hash_aset (hash, rb_tainted_str_new2 ("dn"),
+  rb_hash_aset (hash, rb_str_new2 ("dn"),
 		rb_ary_new3 (1, rb_ldap_entry_get_dn (self)));
   for (i = 0; i < RARRAY_LEN (attrs); i++)
     {
@@ -283,7 +283,7 @@ rb_ldap_entry_to_hash (VALUE self)
   GET_LDAPENTRY_DATA (self, edata);
   hash = rb_hash_dup(edata->attr);
   dn_ary = rb_ary_new3(1, edata->dn);
-  rb_hash_aset(hash, rb_tainted_str_new2("dn"), dn_ary);
+  rb_hash_aset(hash, rb_str_new2("dn"), dn_ary);
 #endif
 
   return hash;

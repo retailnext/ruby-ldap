@@ -221,7 +221,7 @@ rb_ldap_mod_type (VALUE self)
   RB_LDAPMOD_DATA *moddata;
 
   GET_LDAPMOD_DATA (self, moddata);
-  return rb_tainted_str_new2 (moddata->mod->mod_type);
+  return rb_str_new2 (moddata->mod->mod_type);
 }
 
 /*
@@ -248,7 +248,7 @@ rb_ldap_mod_vals (VALUE self)
       for (i = 0; bvals[i] != NULL; i++)
 	{
 	  VALUE str;
-	  str = rb_tainted_str_new (bvals[i]->bv_val, bvals[i]->bv_len);
+	  str = rb_str_new (bvals[i]->bv_val, bvals[i]->bv_len);
 	  rb_ary_push (val, str);
 	}
     }
@@ -259,7 +259,7 @@ rb_ldap_mod_vals (VALUE self)
       for (i = 0; svals[i] != NULL; i++)
 	{
 	  VALUE str;
-	  str = rb_tainted_str_new2 (svals[i]);
+	  str = rb_str_new2 (svals[i]);
 	  rb_ary_push (val, str);
 	}
     }
